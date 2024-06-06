@@ -145,7 +145,7 @@ class HashMap:
             return
 
         # if new_capacity is not prime, calculates next prime number and sets to new_capacity
-        while new_capacity < self._size:
+        if new_capacity < self._size:
             new_capacity = self._size
 
         if not self._is_prime(new_capacity):
