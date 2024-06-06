@@ -90,45 +90,186 @@ class HashMap:
 
     def put(self, key: str, value: object) -> None:
         """
-        TODO: Write this implementation
+        Returns a hash table with the passed key/value pair. If a value exists at the calculated index
+        (from hash function), override the value with the passed value. Else, create a new key/value pair
+        at calculated index.
+
+        :param key: a string that is passed and is used to calculate the index
+        :param value: an object that is passed and is set as a key/value pair to the key
+
+        :return: an updated hash table with the passed key/value pair added at the calculated index
         """
-        pass
+
+        # calculate load factor
+        load_factor = self._size / self._capacity
+
+        # if load factor is >= 1, double capacity of hash table
+        if load_factor >= 1:
+            new_capacity = 2 * self._capacity
+            self.resize_table(new_capacity)
+
+        # calculate the index that the value needs to be inserted into table
+        hash_calc = self._hash_function(key)
+        index = hash_calc % self._capacity
+
+        # find bucket
+        bucket = self._buckets.get_at_index(index)
+
+        # if the bucket exists at desired index continue to node
+        if bucket:
+            node = bucket.contains(key)
+            # if node exists with same key, override with new value
+            if node:
+                node.value = value
+            # else create a new node in SLL
+            else:
+                bucket.insert(key, value)
+                self._size += 1
+        # else create new bucket with key/value pair set at index
+        else:
+            new_bucket = LinkedList()
+            new_bucket.insert(key, value)
+            self._buckets.set_at_index(index, new_bucket)
+            self._size += 1
 
     def resize_table(self, new_capacity: int) -> None:
         """
-        TODO: Write this implementation
+        Doubles the capacity of hash table and moves existing key/value pairs to new table (rehash).
+
+        :param new_capacity: an integer that is the new_capacity (2 * self._capacity)
+
+        :return: a new hash table with double the capacity size but same key/value pairs as the old table
         """
-        pass
+        # if new_capacity is negative, return
+        if new_capacity < 1:
+            return
+
+        # if new_capacity is not prime, calculates next prime number and sets to new_capacity
+        if not self._is_prime(new_capacity):
+            new_capacity = self._next_prime(new_capacity)
+
+        # creates a new hash table (buckets) and append linked list for each index (to capacity)
+        new_hash = DynamicArray()
+        for _ in range(new_capacity):
+            new_hash.append(LinkedList())
+
+        # move key/value pairs from old array to new array
+        for _ in range(self._capacity):
+            bucket = self._buckets.get_at_index(_)
+            # if node in linked list at index, move node to new linked list
+            for node in bucket:
+                new_index = self._hash_function(node.key) % new_capacity
+                new_bucket = new_hash.get_at_index(new_index)
+                new_bucket.insert(node.key, node.value)
+
+        # set new table and capacity to self
+        self._buckets = new_hash
+        self._capacity = new_capacity
 
     def table_load(self) -> float:
         """
-        TODO: Write this implementation
+        Returns the current load factor for the hash table
+
+        :return: a float value that is the current load factor
         """
-        pass
+        # calculates the load factor, number of elements / capacity
+        load_factor = self._size / self._capacity
+
+        return load_factor
 
     def empty_buckets(self) -> int:
         """
-        TODO: Write this implementation
+        Returns the number of empty buckets in the hash table.
+
+        :return: an integer that is the number of empty buckets
         """
-        pass
+        # set empty_buckets to 0
+        empty_buckets = 0
+
+        # in range of array size, if bucket length == 0 (is empty) at i, +1 to empty_bucket total
+        for i in range(self._capacity):
+            bucket = self._buckets.get_at_index(i)
+            if bucket.length() == 0:
+                empty_buckets += 1
+
+        return empty_buckets
 
     def get(self, key: str):
         """
-        TODO: Write this implementation
+        Returns the value associated with a given key, else returns None.
+
+        :param key: a string that is passed and used to calculate the bucket(index) to search for
+        a key/value pair.
+
+        :return: a value that is associated with the passed key.
         """
-        pass
+        # calculate the index that the value needs to be inserted into table
+        hash_calc = self._hash_function(key)
+        index = hash_calc % self._capacity
+
+        # find bucket
+        bucket = self._buckets.get_at_index(index)
+
+        # if the bucket exists at desired index continue to node
+        if bucket:
+            node = bucket.contains(key)
+            # if key at given node == passed key return the value, else return None
+            if node:
+                if node.key == key:
+                    return node.value
+                else:
+                    return None
+            else:
+                return None
+        else:
+            return None
 
     def contains_key(self, key: str) -> bool:
         """
-        TODO: Write this implementation
+        Returns True if the given key is within the hash table, else returns False.
+
+        :param key: a passed string that is given to find within the table and calculate the index
+
+        :return: a Boolean object depending on if the given key is found or not
         """
-        pass
+        # calculate the index that the value needs to be inserted into table
+        hash_calc = self._hash_function(key)
+        index = hash_calc % self._capacity
+
+        # find bucket
+        bucket = self._buckets.get_at_index(index)
+
+        # if the bucket exists at desired index continue to node
+        if bucket.contains(key):
+            return True
+        else:
+            return False
 
     def remove(self, key: str) -> None:
         """
-        TODO: Write this implementation
+        Returns an updated hash map with removed key (passed).
+
+        :param key: a passed string that is looked for in the hash, if found removed.
+
+        :return: an updated hash with the passed key removed
         """
-        pass
+        # calculate the index that the value needs to be inserted into table
+        hash_calc = self._hash_function(key)
+        index = hash_calc % self._capacity
+
+        # find bucket
+        bucket = self._buckets.get_at_index(index)
+
+        # if the bucket exists at desired index continue to node
+        if bucket:
+            node = bucket.contains(key)
+            # if key at given node == passed key remove key/value pair, else return
+            if node and node.key == key:
+                bucket.remove(key)
+            else:
+                return
+        else:
+            return
 
     def get_keys_and_values(self) -> DynamicArray:
         """
