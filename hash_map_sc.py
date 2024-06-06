@@ -90,25 +90,25 @@ class HashMap:
 
     def put(self, key: str, value: object) -> None:
         """
-        Returns a hash table with the passed key/value pair. If a value exists at the calculated index
+        Returns a hash map with the passed key/value pair. If a value exists at the calculated index
         (from hash function), override the value with the passed value. Else, create a new key/value pair
         at calculated index.
 
         :param key: a string that is passed and is used to calculate the index
         :param value: an object that is passed and is set as a key/value pair to the key
 
-        :return: an updated hash table with the passed key/value pair added at the calculated index
+        :return: an updated hash map with the passed key/value pair added at the calculated index
         """
 
         # calculate load factor
         load_factor = self._size / self._capacity
 
-        # if load factor is >= 1, double capacity of hash table
+        # if load factor is >= 1, double capacity of hash map
         if load_factor >= 1:
             new_capacity = 2 * self._capacity
             self.resize_table(new_capacity)
 
-        # calculate the index that the value needs to be inserted into table
+        # calculate the index that the value needs to be inserted into map
         hash_calc = self._hash_function(key)
         index = hash_calc % self._capacity
 
@@ -134,11 +134,11 @@ class HashMap:
 
     def resize_table(self, new_capacity: int) -> None:
         """
-        Doubles the capacity of hash table and moves existing key/value pairs to new table (rehash).
+        Doubles the capacity of hash map and moves existing key/value pairs to new map (rehash).
 
         :param new_capacity: an integer that is the new_capacity (2 * self._capacity)
 
-        :return: a new hash table with double the capacity size but same key/value pairs as the old table
+        :return: a new hash map with double the capacity size but same key/value pairs as the old map
         """
         # if new_capacity is negative, return
         if new_capacity < 1:
@@ -148,7 +148,7 @@ class HashMap:
         if not self._is_prime(new_capacity):
             new_capacity = self._next_prime(new_capacity)
 
-        # creates a new hash table (buckets) and append linked list for each index (to capacity)
+        # creates a new hash map (buckets) and append linked list for each index (to capacity)
         new_hash = DynamicArray()
         for _ in range(new_capacity):
             new_hash.append(LinkedList())
@@ -162,13 +162,13 @@ class HashMap:
                 new_bucket = new_hash.get_at_index(new_index)
                 new_bucket.insert(node.key, node.value)
 
-        # set new table and capacity to self
+        # set new map and capacity to self
         self._buckets = new_hash
         self._capacity = new_capacity
 
     def table_load(self) -> float:
         """
-        Returns the current load factor for the hash table
+        Returns the current load factor for the hash map
 
         :return: a float value that is the current load factor
         """
@@ -179,7 +179,7 @@ class HashMap:
 
     def empty_buckets(self) -> int:
         """
-        Returns the number of empty buckets in the hash table.
+        Returns the number of empty buckets in the hash map.
 
         :return: an integer that is the number of empty buckets
         """
@@ -203,7 +203,7 @@ class HashMap:
 
         :return: a value that is associated with the passed key.
         """
-        # calculate the index that the value needs to be inserted into table
+        # calculate the index that the value needs to be inserted into map
         hash_calc = self._hash_function(key)
         index = hash_calc % self._capacity
 
@@ -226,13 +226,13 @@ class HashMap:
 
     def contains_key(self, key: str) -> bool:
         """
-        Returns True if the given key is within the hash table, else returns False.
+        Returns True if the given key is within the hash map, else returns False.
 
-        :param key: a passed string that is given to find within the table and calculate the index
+        :param key: a passed string that is given to find within the map and calculate the index
 
         :return: a Boolean object depending on if the given key is found or not
         """
-        # calculate the index that the value needs to be inserted into table
+        # calculate the index that the value needs to be inserted into map
         hash_calc = self._hash_function(key)
         index = hash_calc % self._capacity
 
@@ -253,7 +253,7 @@ class HashMap:
 
         :return: an updated hash with the passed key removed
         """
-        # calculate the index that the value needs to be inserted into table
+        # calculate the index that the value needs to be inserted into map
         hash_calc = self._hash_function(key)
         index = hash_calc % self._capacity
 
@@ -275,7 +275,7 @@ class HashMap:
         """
         Returns a DynamicArray of key/value pairs within a hash.
 
-        :return: a dynamic array that contains tuples of key/value pairs from a hash table
+        :return: a dynamic array that contains tuples of key/value pairs from a hash map
         """
         # initializes array
         pairs = DynamicArray()
