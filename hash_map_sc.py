@@ -273,15 +273,47 @@ class HashMap:
 
     def get_keys_and_values(self) -> DynamicArray:
         """
-        TODO: Write this implementation
+        Returns a DynamicArray of key/value pairs within a hash.
+
+        :return: a dynamic array that contains tuples of key/value pairs from a hash table
         """
-        pass
+        # initializes array
+        pairs = DynamicArray()
+
+        # iterates through buckets
+        for i in range(self._capacity):
+            bucket = self._buckets.get_at_index(i)
+            # if linked_list exists at bucket
+            if bucket:
+                for node in bucket:
+                    # if node in linked_list, add the key/value to tuple and append to pairs array
+                    if node:
+                        pair_tuple = (node.key, node.value)
+                        pairs.append(pair_tuple)
+                    else:
+                        i += 1
+            else:
+                i += 1
+
+        return pairs
 
     def clear(self) -> None:
         """
-        TODO: Write this implementation
+        Returns a cleared hash map.
+
+        :return: removes all data from the hash and returns the empty has with the same capacity.
         """
-        pass
+
+        # create a new array (empty buckets)
+        new_hash = DynamicArray()
+
+        # appends a linked list for each index
+        for i in range(self._capacity):
+            new_hash.append(LinkedList())
+
+        # set size = 0, and buckets to empty hash
+        self._buckets = new_hash
+        self._size = 0
 
 
 def find_mode(da: DynamicArray) -> tuple[DynamicArray, int]:
