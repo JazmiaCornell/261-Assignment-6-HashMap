@@ -143,29 +143,31 @@ class HashMap:
         # if new_capacity is negative, return
         if new_capacity < 1:
             return
-        else:
 
-            # if new_capacity is not prime, calculates next prime number and sets to new_capacity
-            if not self._is_prime(new_capacity):
-                new_capacity = self._next_prime(new_capacity)
+        # if new_capacity is not prime, calculates next prime number and sets to new_capacity
+        while self._capacity < self._size:
+            new_capacity = new_capacity * 2
 
-            # creates a new hash map (buckets) and append linked list for each index (to capacity)
-            new_hash = DynamicArray()
-            for i in range(new_capacity):
-                new_hash.append(LinkedList())
+        if not self._is_prime(new_capacity):
+            new_capacity = self._next_prime(new_capacity)
 
-            # move key/value pairs from old array to new array
-            for i in range(self._capacity):
-                bucket = self._buckets.get_at_index(i)
-                # if node in linked list at index, move node to new linked list
-                for node in bucket:
-                    new_index = self._hash_function(node.key) % new_capacity
-                    new_bucket = new_hash.get_at_index(new_index)
-                    new_bucket.insert(node.key, node.value)
+        # creates a new hash map (buckets) and append linked list for each index (to capacity)
+        new_hash = DynamicArray()
+        for i in range(new_capacity):
+            new_hash.append(LinkedList())
 
-            # set new map and capacity to self
-            self._buckets = new_hash
-            self._capacity = new_capacity
+        # move key/value pairs from old array to new array
+        for i in range(self._capacity):
+            bucket = self._buckets.get_at_index(i)
+            # if node in linked list at index, move node to new linked list
+            for node in bucket:
+                new_index = self._hash_function(node.key) % new_capacity
+                new_bucket = new_hash.get_at_index(new_index)
+                new_bucket.insert(node.key, node.value)
+
+        # set new map and capacity to self
+        self._buckets = new_hash
+        self._capacity = new_capacity
 
     def table_load(self) -> float:
         """
