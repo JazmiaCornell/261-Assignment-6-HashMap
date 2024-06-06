@@ -103,10 +103,11 @@ class HashMap:
         # calculate load factor
         load_factor = (self._size / self._capacity)
 
-        # if load factor is >= 1, double capacity of hash map
-        if load_factor >= 1:
-            new_capacity = 2 * self._capacity
-            self.resize_table(new_capacity)
+        while self._size >= self._capacity:
+            # if load factor is >= 1, double capacity of hash map
+            if load_factor >= 1:
+                new_capacity = 2 * self._capacity
+                self.resize_table(new_capacity)
 
         # calculate the index that the value needs to be inserted into map
         hash_calc = self._hash_function(key)
