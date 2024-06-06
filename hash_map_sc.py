@@ -150,12 +150,12 @@ class HashMap:
 
         # creates a new hash map (buckets) and append linked list for each index (to capacity)
         new_hash = DynamicArray()
-        for _ in range(new_capacity):
+        for i in range(new_capacity):
             new_hash.append(LinkedList())
 
         # move key/value pairs from old array to new array
-        for _ in range(self._capacity):
-            bucket = self._buckets.get_at_index(_)
+        for i in range(self._capacity):
+            bucket = self._buckets.get_at_index(i)
             # if node in linked list at index, move node to new linked list
             for node in bucket:
                 new_index = self._hash_function(node.key) % new_capacity
@@ -266,6 +266,7 @@ class HashMap:
             # if key at given node == passed key remove key/value pair, else return
             if node and node.key == key:
                 bucket.remove(key)
+                self._size -= 1
             else:
                 return
         else:
