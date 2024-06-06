@@ -101,7 +101,7 @@ class HashMap:
         """
 
         # calculate load factor
-        load_factor = self._size / self._capacity
+        load_factor = (self._size / self._capacity)
 
         # if load factor is >= 1, double capacity of hash map
         if load_factor >= 1:
