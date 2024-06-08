@@ -341,8 +341,7 @@ def find_mode(da: DynamicArray) -> tuple[DynamicArray, int]:
         for i in range(da.length()):
             if da.get_at_index(temp) == da.get_at_index(i):
                 count += 1
-            else:
-                i += 1
+            i += 1
         # determines high and adds to array
         if count > high:
             # if count is > high, add new high to array
