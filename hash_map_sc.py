@@ -153,6 +153,8 @@ class HashMap:
             if new_capacity < self._size:
                 new_capacity = 2 * new_capacity
             else:
+                if not self._is_prime(new_capacity):
+                    new_capacity = self._next_prime(new_capacity)
                 break
 
         # if new_capacity is not prime, calculates next prime number and sets to new_capacity
