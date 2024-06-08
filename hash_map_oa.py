@@ -215,7 +215,7 @@ class HashMap:
             if hash_entry is None or hash_entry.is_tombstone:
                 return None
             # elif key is found set tombstone to true, decrease size
-            elif hash_entry.key == key and not hash_entry.is_tombstone:
+            elif hash_entry.key == key:
                 hash_entry.is_tombstone = True
                 self._size -= 1
             # if not found, go to next position
