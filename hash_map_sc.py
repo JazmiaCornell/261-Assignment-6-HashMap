@@ -145,9 +145,9 @@ class HashMap:
             return
 
         while new_capacity < self._size:
-            new_capacity = 2 * new_capacity
             if not self._is_prime(new_capacity):
                 new_capacity = self._next_prime(new_capacity)
+            new_capacity = 2 * new_capacity
 
         if not self._is_prime(new_capacity):
             new_capacity = self._next_prime(new_capacity)
