@@ -156,12 +156,14 @@ class HashMap:
             if bucket:
                 index = self._hash_function(bucket.key) % new_capacity
                 j = 0
-                # if nothing found at new_index, move value from old array to new array
-                while temp.get_at_index(index) is not None:
+                while True:
                     # calculates quadratic probe
-                    index = (index + (j ** 2)) % new_capacity
+                    quad_prob = (index + (j ** 2)) % new_capacity
+                    # if nothing found at new_index, move value from old array to new array
+                    if temp.get_at_index(quad_prob) is None:
+                        temp.set_at_index(quad_prob, bucket)
+                        break
                     j += 1
-                temp.set_at_index(index, bucket)
 
         # sets buckets to new map and capacity to new_capacity
         self._buckets = temp
