@@ -123,10 +123,6 @@ class HashMap:
         if new_capacity < self._size:
             return
 
-        # checks if new_capacity is prime, if not finds next prime number
-        # while not self._is_prime(new_capacity):
-        #   new_capacity = self._next_prime(new_capacity)
-
         load_factor = self._size / new_capacity
 
         # if new_capacity is < size, finds next prime if not and doubles if nec.
@@ -157,12 +153,19 @@ class HashMap:
                 index = self._hash_function(bucket.key) % new_capacity
                 j = 0
                 while True:
-                    # calculates quadratic probe
                     quad_prob = (index + (j ** 2)) % new_capacity
-                    # if nothing found at new_index, move value from old array to new array
-                    if temp.get_at_index(quad_prob) is None:
+                    hash_entry = temp.get_at_index(quad_prob)
+                    # if position is empty or is a tombstone (placeholder), sets entry at calc index, increases size
+                    if hash_entry is None or hash_entry.is_tombstone:
                         temp.set_at_index(quad_prob, bucket)
                         break
+                # while True:
+                #     # calculates quadratic probe
+                #     quad_prob = (index + (j ** 2)) % new_capacity
+                #     # if nothing found at new_index, move value from old array to new array
+                #     if temp.get_at_index(quad_prob) is None:
+                #         temp.set_at_index(quad_prob, bucket)
+                #         break
                     j += 1
 
         # sets buckets to new map and capacity to new_capacity
