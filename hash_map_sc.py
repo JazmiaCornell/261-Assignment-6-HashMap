@@ -144,8 +144,8 @@ class HashMap:
         if new_capacity < 1:
             return
 
-        if not self._is_prime(new_capacity):
-            new_capacity = self._next_prime(new_capacity)
+        # if not self._is_prime(new_capacity):
+        #    new_capacity = self._next_prime(new_capacity)
 
         while new_capacity < self._size:
             if not self._is_prime(new_capacity):
@@ -153,9 +153,10 @@ class HashMap:
             if new_capacity < self._size:
                 new_capacity = 2 * new_capacity
             else:
-                if not self._is_prime(new_capacity):
-                    new_capacity = self._next_prime(new_capacity)
                 break
+
+        if not self._is_prime(new_capacity):
+            new_capacity = self._next_prime(new_capacity)
 
         # if new_capacity is not prime, calculates next prime number and sets to new_capacity
         # while not self._is_prime(new_capacity):
@@ -415,11 +416,11 @@ if __name__ == "__main__":
     print("\nPDF - resize example 2")
     print("----------------------")
     m = HashMap(46, hash_function_2)
-    keys = [i for i in range(0, 23, 1)]
+    keys = [i for i in range(0, 24, 1)]
     for key in keys:
         m.put(str(key), key * 42)
     print(m.get_size(), m.get_capacity())
-    m.resize_table(10)
+    m.resize_table(1)
 
     for capacity in range(111, 1000, 117):
         m.resize_table(capacity)
