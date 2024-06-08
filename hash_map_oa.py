@@ -193,7 +193,7 @@ class HashMap:
         """
         Calculates the number of empty buckets in a hash table and returns the integer.
 
-        :return: an integer that is the number of empty buckets in a hash tabble.
+        :return: an integer that is the number of empty buckets in a hash table.
         """
 
         return self._capacity - self._size
