@@ -149,24 +149,25 @@ class HashMap:
             # iterates through old array
             bucket = self._buckets.get_at_index(i)
             # if bucket found, calculates new index (to move value to new array)
-            if bucket:
+            if bucket and not bucket.is_tombstone:
                 index = self._hash_function(bucket.key) % new_capacity
                 j = 0
                 while True:
                     quad_prob = (index + (j ** 2)) % new_capacity
                     hash_entry = temp.get_at_index(quad_prob)
                     # if position is empty or is a tombstone (placeholder), sets entry at calc index, increases size
-                    if hash_entry is None or hash_entry.is_tombstone:
+                    if hash_entry is None:
                         temp.set_at_index(quad_prob, bucket)
                         break
-                # while True:
-                #     # calculates quadratic probe
-                #     quad_prob = (index + (j ** 2)) % new_capacity
-                #     # if nothing found at new_index, move value from old array to new array
-                #     if temp.get_at_index(quad_prob) is None:
-                #         temp.set_at_index(quad_prob, bucket)
-                #         break
                     j += 1
+
+        # while True:
+        #     # calculates quadratic probe
+        #     quad_prob = (index + (j ** 2)) % new_capacity
+        #     # if nothing found at new_index, move value from old array to new array
+        #     if temp.get_at_index(quad_prob) is None:
+        #         temp.set_at_index(quad_prob, bucket)
+        #         break
 
         # sets buckets to new map and capacity to new_capacity
         self._buckets = temp
