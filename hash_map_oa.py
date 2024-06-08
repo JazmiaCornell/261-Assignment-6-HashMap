@@ -305,7 +305,7 @@ if __name__ == "__main__":
     m = HashMap(20, hash_function_1)
     m.put('key1', 10)
     print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
-    m.resize_table(30)
+    m.resize_table(111)
     print(m.get_size(), m.get_capacity(), m.get('key1'), m.contains_key('key1'))
 
     print("\nPDF - resize example 2")
