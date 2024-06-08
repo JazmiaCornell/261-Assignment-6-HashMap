@@ -3,7 +3,8 @@
 # Course: CS261 - Data Structures
 # Assignment: 06
 # Due Date: 06/06/2024
-# Description:
+# Description: The following functions are designed to implement a HashMap utilizing open addressing
+#                for collision resolution
 
 from a6_include import (DynamicArray, DynamicArrayException, HashEntry,
                         hash_function_1, hash_function_2)
@@ -156,7 +157,7 @@ class HashMap:
                     quad_prob = (index + (j ** 2)) % new_capacity
                     hash_entry = temp.get_at_index(quad_prob)
                     # if position is empty or is a tombstone (placeholder), sets entry at calc index, increases size
-                    if hash_entry is None:
+                    if hash_entry is None or hash_entry.is_tombstone:
                         temp.set_at_index(quad_prob, bucket)
                         break
                     j += 1
