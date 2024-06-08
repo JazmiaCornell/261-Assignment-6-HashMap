@@ -258,15 +258,25 @@ class HashMap:
 
     def __iter__(self):
         """
-        TODO: Write this implementation
+        Creates iterator for loop
         """
-        pass
+        # initializes index at 0
+        self._index = 0
+
+        return self
 
     def __next__(self):
         """
-        TODO: Write this implementation
+        Obtains next value and advance iterator
         """
-        pass
+        # goes through array, returning buckets that have key/value pairs
+        while self._index < self._capacity:
+            temp = self._buckets.get_at_index(self._index)
+            self._index += 1
+            if temp and not temp.is_tombstone:
+                return temp
+
+        raise StopIteration
 
 
 # ------------------- BASIC TESTING ---------------------------------------- #
