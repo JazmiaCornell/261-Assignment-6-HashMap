@@ -151,7 +151,7 @@ class HashMap:
             bucket = self._buckets.get_at_index(i)
             # if bucket found, calculates new index (to move value to new array)
             if bucket and not bucket.is_tombstone:
-                index = self._hash_function(bucket.key) % self._capacity
+                index = self._hash_function(bucket.key) % new_capacity
                 j = 0
                 while True:
                     quad_prob = (index + (j ** 2)) % new_capacity
@@ -163,8 +163,9 @@ class HashMap:
                     j += 1
 
         # sets buckets to new map and capacity to new_capacity
-        self._buckets = temp
         self._capacity = new_capacity
+        self._buckets = temp
+
 
     def table_load(self) -> float:
         """
