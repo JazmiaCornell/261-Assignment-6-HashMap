@@ -144,19 +144,16 @@ class HashMap:
         if new_capacity < 1:
             return
 
-        # while new_capacity < self._size:
-        #     new_capacity = 2 * new_capacity
-        #
-        # load_factor = self._size / new_capacity
-        #
-        # while load_factor >= 1:
-        #     new_capacity = new_capacity * 2
+        while new_capacity < self._size:
+            new_capacity = 2 * new_capacity
+            if not self._is_prime(new_capacity):
+                new_capacity = self._next_prime(new_capacity)
 
         # if new_capacity is not prime, calculates next prime number and sets to new_capacity
-        while not self._is_prime(new_capacity):
-            new_capacity = self._next_prime(new_capacity)
-            if new_capacity < self._size:
-                new_capacity = new_capacity * 2
+        # while not self._is_prime(new_capacity):
+        #     new_capacity = self._next_prime(new_capacity)
+        #     if new_capacity < self._size:
+        #         new_capacity = new_capacity * 2
 
         # creates a new hash map (buckets) and append linked list for each index (to capacity)
         new_hash = DynamicArray()
