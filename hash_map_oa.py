@@ -88,7 +88,14 @@ class HashMap:
 
     def put(self, key: str, value: object) -> None:
         """
-        TODO: Write this implementation
+        Returns an updated hash map, that updates a key if it already exists with a new value or appends
+        a new key/value pair at the end the array.
+
+        :param key: a string that is passed, searched for in the hash map
+        :param value: an object that is passed. Is assigned to key
+
+        :returns: an updated hash map with the passed key/value pair
+
         """
         # calculates load factor
         load_factor = self._size / self._capacity
@@ -102,6 +109,7 @@ class HashMap:
         i = 0
 
         while True:
+            # calculates quad probe index
             quad_prob = (index + (i ** 2)) % self._capacity
             hash_entry = self._buckets.get_at_index(quad_prob)
             # if position is empty or is a tombstone (placeholder), sets entry at calc index, increases size
@@ -118,12 +126,17 @@ class HashMap:
 
     def resize_table(self, new_capacity: int) -> None:
         """
-        TODO: Write this implementation
+        Updates the capacity of hash map and moves key/value pairs from old map to new.
+
+        :param new_capacity: a passed integer that is used to create a new hashmap
+
+        :return: a new hashmap with new capacity and key/value pairs rehashed.
         """
         # checks if new capacity is < elements in map
         if new_capacity < self._size:
             return
 
+        # calculates load factor
         load_factor = self._size / new_capacity
 
         # if new_capacity is < size, finds next prime if not and doubles if nec.
@@ -149,11 +162,12 @@ class HashMap:
         for i in range(self._capacity):
             # iterates through old array
             bucket = self._buckets.get_at_index(i)
-            # if bucket found, calculates new index (to move value to new array)
+            # if bucket found and not a tombstone, calculates new index (to move value to new array)
             if bucket and not bucket.is_tombstone:
                 index = self._hash_function(bucket.key) % new_capacity
                 j = 0
                 while True:
+                    # calculates index for quadratic probe
                     quad_prob = (index + (j ** 2)) % new_capacity
                     hash_entry = temp.get_at_index(quad_prob)
                     # if position is empty or is a tombstone (placeholder), sets entry at calc index, increases size
@@ -166,24 +180,31 @@ class HashMap:
         self._capacity = new_capacity
         self._buckets = temp
 
-
     def table_load(self) -> float:
         """
-        TODO: Write this implementation
+        Calculates the load factor for the hash table and returns it.
+
+        :returns: a float that is the load factor for the hash table.
         """
 
         return self._size / self._capacity
 
     def empty_buckets(self) -> int:
         """
-        TODO: Write this implementation
+        Calculates the number of empty buckets in a hash table and returns the integer.
+
+        :return: an integer that is the number of empty buckets in a hash tabble.
         """
 
         return self._capacity - self._size
 
     def get(self, key: str) -> object:
         """
-        TODO: Write this implementation
+        Returns the value (object) that is associated with the passed key.
+
+        :param key: a string that is passed and looked for in the hash table.
+
+        :returns: an object that is the value of the key/value pair.
         """
         # calculates initial index
         index = self._hash_function(key) % self._capacity
@@ -204,9 +225,13 @@ class HashMap:
 
     def contains_key(self, key: str) -> bool:
         """
-        TODO: Write this implementation
-        """
+        Returns True if key is found in the hash table, else returns False.
 
+        :param key: a string passed to the method, that is searched for in the array.
+
+        :returns: a boolean, True if key is found; else, False
+        """
+        # if at key there is no pair, return False
         if self.get(key) is None:
             return False
         else:
@@ -214,7 +239,13 @@ class HashMap:
 
     def remove(self, key: str) -> None:
         """
-        TODO: Write this implementation
+        Returns an updated hash table with passed key(/value pair) is removed. If the key doesn't
+        exist, nothing occurs.
+
+        :param key: a passed string that is searched for and removed from the hash table.
+
+        :return: an updated hash table with the passed key and value remove, else nothing occurs.
+
         """
         # calculates initial index
         index = self._hash_function(key) % self._capacity
@@ -236,7 +267,9 @@ class HashMap:
 
     def get_keys_and_values(self) -> DynamicArray:
         """
-        TODO: Write this implementation
+        Returns a dynamic array with the key/value pairs that are contained within the hash table.
+
+        :return: a DynamicArray with the key/value pairs of the hash table.
         """
         # creates dynamic array
         pairs = DynamicArray()
@@ -257,7 +290,9 @@ class HashMap:
 
     def clear(self) -> None:
         """
-        TODO: Write this implementation
+        Returns a cleared hash map.
+
+        :return: clears all key/value pairs from the hash map.
         """
         # create a new array (empty buckets)
         temp = DynamicArray()
