@@ -124,7 +124,19 @@ class HashMap:
             return
 
         # checks if new_capacity is prime, if not finds next prime number
-        while not self._is_prime(new_capacity):
+        # while not self._is_prime(new_capacity):
+        #   new_capacity = self._next_prime(new_capacity)
+
+        # if new_capacity is < size, finds next prime if not and doubles if nec.
+        while new_capacity < self._size:
+            if not self._is_prime(new_capacity):
+                new_capacity = self._next_prime(new_capacity)
+            if new_capacity < self._size:
+                new_capacity = 2 * new_capacity
+            else:
+                break
+        # ensures new_capacity is a prime number
+        if not self._is_prime(new_capacity):
             new_capacity = self._next_prime(new_capacity)
 
         # creates new map
