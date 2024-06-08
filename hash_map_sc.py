@@ -322,29 +322,39 @@ class HashMap:
 
 def find_mode(da: DynamicArray) -> tuple[DynamicArray, int]:
     """
-    TODO: Write this implementation
+    Returns a tuple that contains a dynamic array with the mode and frequency.
+
+    :param da: a DynamicArray passed to the method
+
+    :returns: a tuple with a dynamic array and integer that is the mode and frequency of da.
     """
     temp = 0
     count = 0
     high = 0
 
+    # creates dynamic array to return
     mode_arr = DynamicArray()
 
+    # find mode and it's frequency of da
     while temp < da.length():
+        # iterates through da and calculates mode
         for i in range(da.length()):
             if da.get_at_index(temp) == da.get_at_index(i):
                 count += 1
             else:
                 i += 1
-
+        # determines high and adds to array
         if count > high:
+            # if count is > high, add new high to array
             high = count
             name = da.get_at_index(temp)
             if mode_arr.length() == 0:
                 mode_arr.append(name)
             else:
-                mode_arr.set_at_index(0, name)
+                mode_arr = DynamicArray()
+                mode_arr.append(name)
         elif count == high:
+            # if count == high, adds mode to existing array
             name = da.get_at_index(temp)
             high = count
             contains = False
@@ -354,13 +364,11 @@ def find_mode(da: DynamicArray) -> tuple[DynamicArray, int]:
 
             if not contains:
                 mode_arr.append(da.get_at_index(temp))
-
+        # increases temp and resets count
         temp += 1
         count = 0
 
-    mode_tuple = (mode_arr, high)
-
-    return mode_tuple
+    return mode_arr, high
 
 
 # ------------------- BASIC TESTING ---------------------------------------- #
