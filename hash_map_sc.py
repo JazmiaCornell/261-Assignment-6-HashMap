@@ -3,7 +3,7 @@
 # Course: CS261 - Data Structures
 # Assignment: 06
 # Due Date: 06/06/2024
-# Description:
+# Description: The following functions are designed to implement a HashMap utilizing chaining for collision resolution.
 
 
 from a6_include import (DynamicArray, LinkedList,
