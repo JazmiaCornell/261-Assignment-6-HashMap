@@ -233,7 +233,7 @@ class HashMap:
             # if bucket has value
             if bucket:
                 # creates tuple of key/value pair and adds to pair array
-                if bucket is not bucket.is_tombstone:
+                if not bucket.is_tombstone:
                     pair_tuple = (bucket.key, bucket.value)
                     pairs.append(pair_tuple)
                 else:
