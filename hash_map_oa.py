@@ -89,55 +89,171 @@ class HashMap:
         """
         TODO: Write this implementation
         """
-        pass
+        # calculates load factor
+        load_factor = self._size / self._capacity
+        # if >= .5, resizes table
+        if load_factor >= 0.5:
+            self.resize_table(self._capacity * 2)
+        # creates entry for hash map
+        temp = HashEntry(key, value)
+        # calculates initial index
+        index = (self._hash_function(key) % self._capacity)
+        i = 0
+
+        while True:
+            quad_prob = (index + (i ** 2)) % self._capacity
+            hash_entry = self._buckets.get_at_index(quad_prob)
+            # if position is empty or is a tombstone (placeholder), sets entry at calc index, increases size
+            if hash_entry is None or hash_entry.is_tombstone:
+                self._buckets.set_at_index(quad_prob, temp)
+                self._size += 1
+                return
+            # if key already exists, replaces old value with new
+            elif hash_entry.key == key:
+                hash_entry.value = value
+                return
+            # if not empty or key not found, go to next position
+            i += 1
 
     def resize_table(self, new_capacity: int) -> None:
         """
         TODO: Write this implementation
         """
-        pass
+        # checks if new capacity is < elements in map
+        if new_capacity < self._size:
+            return
+        # checks if new_capacity is prime, if not finds next prime number
+        while not self._is_prime(new_capacity):
+            new_capacity = self._next_prime(new_capacity)
+
+        # creates new map
+        temp = DynamicArray()
+        # initializes new map
+        for i in range(new_capacity):
+            temp.append(None)
+
+        # moves old values to new map
+        for i in range(self._capacity):
+            # iterates through old array
+            bucket = self._buckets.get_at_index(i)
+            # if bucket found, calculates new index (to move value to new array)
+            if bucket and not bucket.is_tombstone:
+                index = self._hash_function(bucket.key) % new_capacity
+                j = 0
+                while True:
+                    # calculates quadratic probe
+                    quad_prob = (index + (j ** 2)) % new_capacity
+                    # if nothing found at new_index, move value from old array to new array
+                    if temp.get_at_index(quad_prob) is None:
+                        temp.set_at_index(quad_prob, bucket)
+                        break
+                    j += 1
+
+        # sets buckets to new map and capacity to new_capacity
+        self._buckets = temp
+        self._capacity = new_capacity
 
     def table_load(self) -> float:
         """
         TODO: Write this implementation
         """
-        pass
+
+        return self._size / self._capacity
 
     def empty_buckets(self) -> int:
         """
         TODO: Write this implementation
         """
-        pass
+
+        return self._capacity - self._size
 
     def get(self, key: str) -> object:
         """
         TODO: Write this implementation
         """
-        pass
+        # calculates initial index
+        index = self._hash_function(key) % self._capacity
+        i = 0
+
+        while True:
+            # quadratic probing
+            quad_prob = (index + (i ** 2)) % self._capacity
+            hash_entry = self._buckets.get_at_index(quad_prob)
+            # if position is empty or has a placeholder, return None
+            if hash_entry is None or hash_entry.is_tombstone:
+                return None
+            # elif key is found return value
+            elif hash_entry.key == key:
+                return hash_entry.value
+            # if not found, go to next position
+            i += 1
 
     def contains_key(self, key: str) -> bool:
         """
         TODO: Write this implementation
         """
-        pass
+
+        if self.get(key) is None:
+            return False
+        else:
+            return True
 
     def remove(self, key: str) -> None:
         """
         TODO: Write this implementation
         """
-        pass
+        # calculates initial index
+        index = self._hash_function(key) % self._capacity
+        i = 0
+
+        while True:
+            # quadratic probing
+            quad_prob = (index + (i ** 2)) % self._capacity
+            hash_entry = self._buckets.get_at_index(quad_prob)
+            # if position is empty or has a placeholder, return None
+            if hash_entry is None or hash_entry.is_tombstone:
+                return None
+            # elif key is found set tombstone to true, decrease size
+            elif hash_entry.key == key:
+                hash_entry.is_tombstone = True
+                self._size -= 1
+            # if not found, go to next position
+            i += 1
 
     def get_keys_and_values(self) -> DynamicArray:
         """
         TODO: Write this implementation
         """
-        pass
+        # creates dynamic array
+        pairs = DynamicArray()
+
+        # iterates through capacity size
+        for i in range(self._capacity):
+            bucket = self._buckets.get_at_index(i)
+            # if bucket has value
+            if bucket:
+                # creates tuple of key/value pair and adds to pair array
+                pair_tuple = (bucket.key, bucket.value)
+                pairs.append(pair_tuple)
+            else:
+                i += 1
+
+        return pairs
 
     def clear(self) -> None:
         """
         TODO: Write this implementation
         """
-        pass
+        # create a new array (empty buckets)
+        temp = DynamicArray()
+
+        # appends None to each bucket
+        for i in range(self._capacity):
+            temp.append(None)
+
+        # set size = 0, and buckets to temp
+        self._buckets = temp
+        self._size = 0
 
     def __iter__(self):
         """
