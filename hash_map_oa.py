@@ -232,7 +232,7 @@ class HashMap:
             quad_prob = (index + (i ** 2)) % self._capacity
             hash_entry = self._buckets.get_at_index(quad_prob)
             # if position is empty or has a placeholder, return None
-            if hash_entry is None or hash_entry.is_tombstone:
+            if hash_entry is None:
                 return None
             # elif key is found set tombstone to true, decrease size
             elif hash_entry.key == key:
