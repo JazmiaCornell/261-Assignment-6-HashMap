@@ -151,8 +151,8 @@ class HashMap:
                     j += 1
 
         # sets buckets to new map and capacity to new_capacity
-        self._capacity = new_capacity
         self._buckets = temp
+        self._capacity = new_capacity
 
     def table_load(self) -> float:
         """
@@ -215,7 +215,7 @@ class HashMap:
             if hash_entry is None or hash_entry.is_tombstone:
                 return None
             # elif key is found set tombstone to true, decrease size
-            elif hash_entry.key == key:
+            elif hash_entry.key == key and not hash_entry.is_tombstone:
                 hash_entry.is_tombstone = True
                 self._size -= 1
             # if not found, go to next position
