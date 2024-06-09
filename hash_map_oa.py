@@ -307,7 +307,7 @@ class HashMap:
 
     def __iter__(self):
         """
-        Creates iterator for loop
+        Creates iterator for loop, allowing the map to iterate across itself.
         """
         # initializes index at 0
         self._index = 0
