@@ -333,46 +333,34 @@ def find_mode(da: DynamicArray) -> tuple[DynamicArray, int]:
 
     :returns: a tuple with a dynamic array and integer that is the mode and frequency of da.
     """
-    temp = 0
-    count = 0
-    high = 0
+    # creates new hash map
+    freq_map = HashMap()
+    # iterates through passed arr (da), counting the frequency of each value
+    # adds key/value pair to hash map
+    for i in range(da.length()):
+        value = da.get_at_index(i)
+        if freq_map.contains_key(value):
+            freq_map.put(value, freq_map.get(value) + 1)
+        else:
+            freq_map.put(da.get_at_index(i), 1)
 
-    # creates dynamic array to return
+    # sets frequency to 0, set pairs to dynamic array received by .get_keys_and_values
+    freq = 0
+    pairs = freq_map.get_keys_and_values()
+    # initializes dynamic array to return
     mode_arr = DynamicArray()
 
-    # find mode and it's frequency of da
-    while temp < da.length():
-        # iterates through da and calculates mode
-        for i in range(da.length()):
-            if da.get_at_index(temp) == da.get_at_index(i):
-                count += 1
-            i += 1
-        # determines high and adds to array
-        if count > high:
-            # if count is > high, add new high to array
-            high = count
-            name = da.get_at_index(temp)
-            if mode_arr.length() == 0:
-                mode_arr.append(name)
-            else:
-                mode_arr = DynamicArray()
-                mode_arr.append(name)
-        elif count == high:
-            # if count == high, adds mode to existing array
-            name = da.get_at_index(temp)
-            high = count
-            contains = False
-            for i in range(mode_arr.length()):
-                if name == mode_arr.get_at_index(i):
-                    contains = True
+    # iterates through pairs, setting frequency to the highest value in key/value pairs
+    for i in range(pairs.length()):
+        if pairs.get_at_index(i)[1] > freq:
+            freq = pairs.get_at_index(i)[1]
 
-            if not contains:
-                mode_arr.append(da.get_at_index(temp))
-        # increases temp and resets count
-        temp += 1
-        count = 0
+    # iterates through pairs, adding keys that = frequency to mode_arr (dynamicArray)
+    for i in range(pairs.length()):
+        if pairs.get_at_index(i)[1] == freq:
+            mode_arr.append(pairs.get_at_index(i)[0])
 
-    return mode_arr, high
+    return mode_arr, freq
 
 
 # ------------------- BASIC TESTING ---------------------------------------- #
@@ -557,24 +545,24 @@ if __name__ == "__main__":
     # print(m.get_size(), m.get_capacity())
     # m.resize_table(100)
     # print(m.get_size(), m.get_capacity())
-    # m.clear()
-    # print(m.get_size(), m.get_capacity())
-    #
-    # print("\nPDF - find_mode example 1")
-    # print("-----------------------------")
-    # da = DynamicArray(["apple", "apple", "grape", "melon", "peach"])
-    # mode, frequency = find_mode(da)
-    # print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}")
-    #
-    # print("\nPDF - find_mode example 2")
-    # print("-----------------------------")
-    # test_cases = (
-    #     ["Arch", "Manjaro", "Manjaro", "Mint", "Mint", "Mint", "Ubuntu", "Ubuntu", "Ubuntu"],
-    #     ["one", "two", "three", "four", "five"],
-    #     ["2", "4", "2", "6", "8", "4", "1", "3", "4", "5", "7", "3", "3", "2"]
-    # )
-    #
-    # for case in test_cases:
-    #     da = DynamicArray(case)
-    #     mode, frequency = find_mode(da)
-    #     print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}\n")
+    m.clear()
+    print(m.get_size(), m.get_capacity())
+
+    print("\nPDF - find_mode example 1")
+    print("-----------------------------")
+    da = DynamicArray(["apple", "apple", "grape", "melon", "peach"])
+    mode, frequency = find_mode(da)
+    print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}")
+
+    print("\nPDF - find_mode example 2")
+    print("-----------------------------")
+    test_cases = (
+        ["Arch", "Manjaro", "Manjaro", "Mint", "Mint", "Mint", "Ubuntu", "Ubuntu", "Ubuntu"],
+        ["one", "two", "three", "four", "five"],
+        ["2", "4", "2", "6", "8", "4", "1", "3", "4", "5", "7", "3", "3", "2"]
+    )
+
+    for case in test_cases:
+        da = DynamicArray(case)
+        mode, frequency = find_mode(da)
+        print(f"Input: {da}\nMode : {mode}, Frequency: {frequency}\n")
